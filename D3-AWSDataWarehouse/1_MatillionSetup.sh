@@ -1,8 +1,6 @@
-#NOTE: This is from Github and needs to be updated and verified
+#!/bin/bash
 
-# Location -- https://github.com/lynnlangit/AWS-Redshift-Matillion-Workshop/blob/master/BuildRedshiftMatillionWorkshop.sh
-
-## START SCRIPT (Sets up Matillion ETL on AWS EC2)
+#------Sets up Matillion ETL on AWS EC2)-------------------------
 
 set -e
 

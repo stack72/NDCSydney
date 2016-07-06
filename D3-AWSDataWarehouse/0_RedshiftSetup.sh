@@ -1,5 +1,6 @@
+#!/bin/bash
 
-## START SCRIPT (Sets up Redshift on AWS EC2)
+#-----Sets up Redshift on AWS EC2)-------------------------------------
 
 set -e
 

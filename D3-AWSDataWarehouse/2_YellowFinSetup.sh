@@ -1,4 +1,6 @@
-## START SCRIPT (Sets up YellowFin from AWS Marketplace on AWS EC2)
+#!/bin/bash
+
+#------Sets up YellowFin from AWS Marketplace on AWS EC2)------------
 
 set -e
 
