@@ -46,4 +46,8 @@ aws ec2 associate-address --instance-id $instance-id --allocation-id $allocation
 securityGroupId=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcId | jq .SecurityGroups[0].GroupId -r`
 aws ec2 authorize-security-group-ingress --group-id $securityGroupId  --protocol tcp --port 5439 --cidr 10.0.0.0/16
 
+#Load Data into Redshift via Matillion using data in public S3 bucket
+# TODO
+# NOTE: Import an existing Matillion package?
+
 ##END SCRIPT

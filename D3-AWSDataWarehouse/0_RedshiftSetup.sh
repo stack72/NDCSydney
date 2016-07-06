@@ -1,14 +1,10 @@
 
-#NOTE: This is from Github and needs to be updated and verified
-
-# Location -- https://github.com/lynnlangit/AWS-Redshift-Matillion-Workshop/blob/master/BuildRedshiftMatillionWorkshop.sh
-
-## START SCRIPT (Sets up Matillion ETL on AWS EC2)
+## START SCRIPT (Sets up Redshift on AWS EC2)
 
 set -e
 
 #TIP: Create IAM Group (and Users) with appropriate permissions prior to running this script
-#User permissions needed are as follows: AWS S3, AWS Redshift, AWS EC2, AWS Marketplace
+#User permissions needed are as follows: AWS S3, AWS Redshift, AWS EC2
 
 #Create a VPC
 vpcId=`aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq .Vpc.VpcId -r`
@@ -47,20 +43,9 @@ echo created $redshiftid
 #Create/alter a security group
 # TODO
 
-#MATILLION ETL on AWS EC2 via AWS Marketplace image
+#Access the public S3 data bucket
+# TODO
 
-#Launch Matillion EC2 Instance from the AWS Marketplace
-# TOVERIFY - must use the AMI from your region for Matillion from the marketplace
-echo instance-id=`aws ec2 run-instances --image-id ami-fd85fa98 --count 1 --instance-type m3.large --key-name MyKeyPair --security-group-ids $securityGroupId --subnet-id $subnetid`
-echo $instance-id
 
-#Add an Elastic IP
-echo ipAddress=`aws ec2 allocate-address --domain vpc | jq -r .PublicIp`
-echo $ipAddress
-echo $allocation-id
-
-#Attach the Elastic IP to the Matillion Instance
-# TOVERIFY
-aws ec2 associate-address --instance-id $instance-id --allocation-id $allocation-id
 
 ##END SCRIPT
