@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 #-----Sets up Redshift on AWS EC2)-------------------------------------

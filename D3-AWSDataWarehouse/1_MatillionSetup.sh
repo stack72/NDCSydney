@@ -20,11 +20,9 @@ gatewayid=`aws ec2 create-internet-gateway| jq .InternetGateway.InternetGatewayI
 echo gateway $gatewayid created
 
 
-#MATILLION ETL on AWS EC2 via AWS Marketplace image
-
-#Launch Matillion EC2 Instance from the AWS Marketplace
+#Launch Matillion EC2 Instance from the AWS Marketplace for the Australia region
 # TOVERIFY - must use the AMI from your region for Matillion from the marketplace
-echo instance-id=`aws ec2 run-instances --image-id ami-fd85fa98 --count 1 --instance-type m3.large --key-name MyKeyPair --security-group-ids $securityGroupId --subnet-id $subnetid`
+echo instance-id=`aws ec2 run-instances --image-id 	ami-817e56e2 --count 1 --instance-type m3.large --key-name MyKeyPair --security-group-ids $securityGroupId --subnet-id $subnetid`
 echo $instance-id
 
 #Add an Elastic IP

@@ -11,7 +11,7 @@ set -e
 vpcId=`aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq .Vpc.VpcId -r`
 echo vpc $vpcId created
 
-#Use thesubnet
+#Use the subnet
 subnetid=`aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.0.0/16| jq .Subnet.SubnetId -r`
 echo subnet $subnetid created
 
@@ -22,14 +22,13 @@ echo route table $routetableId found
 aws ec2 create-route --route-table-id $routetableId --destination-cidr-block 0.0.0.0/0 --gateway-id $gatewayid
 
 #Add YellowFin rule(s) into the security group
+# TODO - needs rule for SSH (20), HTTP/S (80/443)
 securityGroupId=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcId | jq .SecurityGroups[0].GroupId -r`
 aws ec2 authorize-security-group-ingress --group-id $securityGroupId  --protocol tcp --port 5439 --cidr 10.0.0.0/16
 
-#YelloFin on AWS EC2 via AWS Marketplace image
-
-#Launch YelloFin  EC2 Instance from the AWS Marketplace
-# TOVERIFY - must use the AMI from your region for YelloFin  from the marketplace
-echo instance-id=`aws ec2 run-instances --image-id ami-fd85fa98 --count 1 --instance-type m3.large --key-name MyKeyPair --security-group-ids $securityGroupId --subnet-id $subnetid`
+#Launch YelloFin EC2 Instance from the AWS Marketplace using AMI for Australia
+# Use the AMI from your region for YelloFin from the marketplace 
+echo instance-id=`aws ec2 run-instances --image-id ami-209ebd43 --count 1 --instance-type m3.large --key-name MyKeyPair --security-group-ids $securityGroupId --subnet-id $subnetid`
 echo $instance-id
 
 #Add an Elastic IP
