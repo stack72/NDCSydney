@@ -45,6 +45,9 @@ echo created $redshiftid
 #Create/alter a security group
 # TODO
 
+# TODO - Pattern to add tags to resources
+aws redshift create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc
+
 #Access the public S3 data bucket
 # TODO
 

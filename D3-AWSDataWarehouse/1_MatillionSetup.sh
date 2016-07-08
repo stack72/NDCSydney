@@ -25,6 +25,9 @@ echo gateway $gatewayid created
 echo instance-id=`aws ec2 run-instances --image-id 	ami-817e56e2 --count 1 --instance-type m3.large --key-name MyKeyPair --security-group-ids $securityGroupId --subnet-id $subnetid`
 echo $instance-id
 
+# TODO - Pattern to add tags to resources
+aws ec2 create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc
+
 #Add an Elastic IP
 echo ipAddress=`aws ec2 allocate-address --domain vpc | jq -r .PublicIp`
 echo $ipAddress
