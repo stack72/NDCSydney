@@ -20,12 +20,12 @@ echo vpc $vpcId deleted
 subnetid=`aws ec2 delete-subnet --vpc-id $vpcId --cidr-block 10.0.0.0/16| jq .Subnet.SubnetId -r`
 echo subnet $subnetid deleted
 
+#Detach internet gateway 
+aws ec2 detach-internet-gateway --internet-gateway-id  $gatewayid --vpc-id  $vpcId
+
 #Delete an Internet gateway
 gatewayid=`aws ec2 delete-internet-gateway| jq .InternetGateway.InternetGatewayId -r`
 echo gateway $gatewayid deleted
-
-#Delete internet gateway - TODO: 'dettach'
-aws ec2 attach-internet-gateway --internet-gateway-id  $gatewayid --vpc-id  $vpcId
 
 #Delete default route to route table.
 routetableId=`aws ec2 describe-route-tables | jq .RouteTables[0].RouteTableId -r`
@@ -46,8 +46,8 @@ aws ec2 terminate-instances ....
 aws redshift describe-instances --resources ami-<value> i-<value> --tags Key=show,Value=ndc
 aws redshift delete-cluster ....
 
-#Delete public S3 data bucket
-aws s3 <bucketName> <tag>....
+#Delete non-empty public S3 data bucket
+aws s3 rb s://<bucketName> <tag>.... --force
 echo s3 $demoBucket deleted
 
 ##END SCRIPT
