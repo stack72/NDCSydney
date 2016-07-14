@@ -43,11 +43,12 @@ aws ec2 terminate-instances ....
 
 #Find Redshift cluster tagged instances and delete them
 # TODO - Pattern to add tags to resources
-aws redshift describe-instances --resources ami-<value> i-<value> --tags Key=show,Value=ndc
+redshiftCluster='aws redshift describe-instances --resources ami-<value> i-<value> --tags Key=show,Value=ndc'
 aws redshift delete-cluster ....
+echo redshiftCluster $redshiftCluster deleted
 
 #Delete non-empty public S3 data bucket
-aws s3 rb s://<bucketName> <tag>.... --force
+demoBusket='aws s3 rb s3://<bucketName> <tag>.... --force'
 echo s3 $demoBucket deleted
 
 ##END SCRIPT

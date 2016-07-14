@@ -8,12 +8,12 @@ set -e
 #User permissions needed are as follows: AWS S3, AWS Redshift, AWS EC2, AWS Marketplace
 
 #Use the VPC
-vpcId=`aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq .Vpc.VpcId -r`
-echo vpc $vpcId created
+vpcId=`aws ec2 describe-vpc --region 'ap-southeast-2'`
+echo vpc $vpcId 
 
 #Use the subnet
-subnetid=`aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.0.0/16| jq .Subnet.SubnetId -r`
-echo subnet $subnetid created
+subnetid=`aws ec2 describe-subnet --region 'ap-southeast-2'`
+echo subnet $subnetid 
 
 #Add default route to route table.
 # Fix - Is this needed?

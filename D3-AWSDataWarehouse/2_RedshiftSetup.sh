@@ -8,13 +8,13 @@ set -e
 #TIP: Create IAM Group (and Users) with appropriate permissions prior to running this script
 #User permissions needed are as follows: AWS S3, AWS Redshift, AWS EC2
 
-#Create a VPC
-vpcId=`aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq .Vpc.VpcId -r`
-echo vpc $vpcId created
+#Use the VPC
+vpcId=`aws ec2 describe-vpc --region 'ap-southeast-2'`
+echo vpc $vpcId 
 
-#Create a subnet
-subnetid=`aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.0.0/16| jq .Subnet.SubnetId -r`
-echo subnet $subnetid created
+#Use the subnet
+subnetid=`aws ec2 describe-subnet --region 'ap-southeast-2'`
+echo subnet $subnetid 
 
 #Create an Internet gateway
 gatewayid=`aws ec2 create-internet-gateway| jq .InternetGateway.InternetGatewayId -r`
@@ -43,7 +43,9 @@ echo redshiftid =`aws redshift create-cluster --node-type dc1.large  --master-us
 echo created $redshiftid
 
 #Create/alter a security group
-# TODO
+redshiftSecurityGroup='aws redshift create-cluster-security-group'...
+echo created $redshiftSecurityGroup
+
 
 # TODO - Pattern to add tags to resources
 aws redshift create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc
