@@ -1,9 +1,11 @@
 #!/bin/bash
 
+set -e
+
 #------Sets up YellowFin from AWS Marketplace on AWS EC2)------------
 
-set -e
 REGION = 'ap-southeast-2'
+MYKEYPAIR = ''
 
 # TIP: Create IAM Group (and Users) with appropriate permissions prior to running this script
 # User permissions needed are as follows: AWS S3, AWS Redshift, AWS EC2, AWS Marketplace
@@ -20,7 +22,8 @@ aws ec2 authorize-security-group-ingress --group-id $securityGroupId  --protocol
 
 # Launch YelloFin EC2 Instance from the AWS Marketplace using AMI for Australia
 # Use the AMI from your region for YelloFin from the marketplace 
-echo instance-id=`aws ec2 run-instances --image-id ami-209ebd43 --count 1 --instance-type m3.large --key-name MyKeyPair --security-group-ids $securityGroupId --subnet-id $subnetid`
+echo instance-id=`aws ec2 run-instances --image-id ami-209ebd43 --count 1 --instance-type m3.large \
+    --key-name MyKeyPair --security-group-ids $securityGroupId --subnet-id $subnetid`
 echo $instance-id
 
 # TODO - Pattern to add tags to resources

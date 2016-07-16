@@ -1,17 +1,17 @@
 
 #!/bin/bash
 
+set -e
+
 #-----Removes all demo resources-------------------------------------
 
-set -e
 REGION = 'ap-southeast-2'
 
 # TODO - Determine and update 'destruction order' of objects
-# IAM user, Networking Objects (VPC, etc..), Redshift, EC2 instances, others?
 
-# Delete IAM User and Role w/ permissions on S3, EC2, Redshift
-warehouseUser = 'aws iam delete-user ....'
-echo warehouseUser $warehouseUser deleted
+WAREHOUSEUSER = 'aws iam delete-user ....'
+WAREHOUSEROLE = 'aws iam delete-role ... '
+WAREHOUSEPOLICY= 'aws iam delete-policy ....'
 
 # Delete a VPC
 vpcId=`aws ec2 delete-vpc --cidr-block 10.0.0.0/16 | jq .Vpc.VpcId -r`
