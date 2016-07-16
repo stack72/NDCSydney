@@ -3,6 +3,7 @@
 #-----Sets up IAM, VPC on AWS-------------------------------------
 
 set -e
+REGION = 'ap-southeast-2'
 
 # TODO - parametize the AWS region and user for script execution
 # NOTE: Use AWS object tags as follows: "show":"ndc" in the 'ap-southeast-2' (Sydney) region
@@ -14,15 +15,15 @@ echo warehouseUser $warehouseUser created
 # Assign permission via AWS Policy associated to IAM user - needs S3, EC2, Redshift
 # TODO
 
-#Create a VPC
+# Create a VPC
 vpcId=`aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq .Vpc.VpcId -r`
 echo vpc $vpcId created
 
-#Create a subnet
+# Create a subnet
 subnetid=`aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.0.0/16| jq .Subnet.SubnetId -r`
 echo subnet $subnetid created
 
-#Create an Internet gateway
+# Create an Internet gateway
 gatewayid=`aws ec2 create-internet-gateway| jq .InternetGateway.InternetGatewayId -r`
 echo gateway $gatewayid created
 

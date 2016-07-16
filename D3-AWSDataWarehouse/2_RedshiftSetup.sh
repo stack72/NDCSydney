@@ -4,32 +4,21 @@
 #-----Sets up Redshift on AWS EC2)-------------------------------------
 
 set -e
+REGION = 'ap-southeast-2'
 
-#TIP: Create IAM Group (and Users) with appropriate permissions prior to running this script
-#User permissions needed are as follows: AWS S3, AWS Redshift, AWS EC2
+# TIP: Create IAM Group (and Users) with appropriate permissions prior to running this script
+# User permissions needed are as follows: AWS S3, AWS Redshift, AWS EC2
 
-#Use the VPC
-vpcId=`aws ec2 describe-vpc --region 'ap-southeast-2'`
-echo vpc $vpcId 
-
-#Use the subnet
-subnetid=`aws ec2 describe-subnet --region 'ap-southeast-2'`
-echo subnet $subnetid 
-
-#Create an Internet gateway
-gatewayid=`aws ec2 create-internet-gateway| jq .InternetGateway.InternetGatewayId -r`
-echo gateway $gatewayid created
-
-#Attach internet gateway
-aws ec2 attach-internet-gateway --internet-gateway-id  $gatewayid --vpc-id  $vpcId
+VPCID=`aws ec2 describe-vpc --region $REGION`
+SUBNETID=`aws ec2 describe-subnet --region $REGION`
+ROUTETABLEID=`aws ec2 describe-route-tables | jq .RouteTables[0].RouteTableId -r`
+GATEWAYID=`aws ec2 create-internet-gateway| jq .InternetGateway.InternetGatewayId -r`
 
 #Add default route to route table.
-routetableId=`aws ec2 describe-route-tables | jq .RouteTables[0].RouteTableId -r`
-echo route table $routetableId found
-aws ec2 create-route --route-table-id $routetableId --destination-cidr-block 0.0.0.0/0 --gateway-id $gatewayid
+aws ec2 create-route --route-table-id $routetableId --destination-cidr-block 0.0.0.0/0 --gateway-id $GATEWAYID
 
 #Add redshift rule into the security group
-securityGroupId=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcId | jq .SecurityGroups[0].GroupId -r`
+securityGroupId=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$VPCID | jq .SecurityGroups[0].GroupId -r`
 aws ec2 authorize-security-group-ingress --group-id $securityGroupId  --protocol tcp --port 5439 --cidr 10.0.0.0/16
 
 # AWS REDSHIFT
@@ -45,7 +34,6 @@ echo created $redshiftid
 #Create/alter a security group
 redshiftSecurityGroup='aws redshift create-cluster-security-group'...
 echo created $redshiftSecurityGroup
-
 
 # TODO - Pattern to add tags to resources
 aws redshift create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc
