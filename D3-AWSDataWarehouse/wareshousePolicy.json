@@ -32,7 +32,13 @@
                 "redshift:*"
             ],
             "Effect": "Allow",
-            "Resource": "*"
+            "Resource": [
+                "arn:aws:s3:::ndc-demo/*",
+                "arn:aws:ec2:::*",
+                "arn:aws:redshift:::*",
+                "arn:aws:aws-marketplace:::*",
+                "arn:aws:cloudformation:::*"
+            ]
         }
     ]
 }

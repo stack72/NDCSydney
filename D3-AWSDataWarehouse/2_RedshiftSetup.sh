@@ -10,11 +10,11 @@ MYKEYPAIR = ''
 
 VPCID=`aws ec2 describe-vpc --region $REGION`
 SUBNETID=`aws ec2 describe-subnet --region $REGION`
-ROUTETABLEID=`aws ec2 describe-route-tables | jq .RouteTables[0].RouteTableId -r`
-GATEWAYID=`aws ec2 create-internet-gateway| jq .InternetGateway.InternetGatewayId -r`
+ROUTETABLEID=`aws ec2 describe-route-tables`
+GATEWAYID=`aws ec2 create-internet-gateway`
 
 aws ec2 create-route --route-table-id $routetableId --destination-cidr-block 0.0.0.0/0 --gateway-id $GATEWAYID
-SECURITYGROUPID=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$VPCID | jq .SecurityGroups[0].GroupId -r`
+SECURITYGROUPID=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$VPCID`
 aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 5439 --cidr 10.0.0.0/16
 
 SUBNETGROUP = aws redshift create-cluster-subnet-group --cluster-subnet-group-name NDCDEMO  --description "NDCDEMO" --subnet-ids $SUBNETID
@@ -31,6 +31,7 @@ REDSHIFTSECURITYGROUP='aws redshift create-cluster-security-group'...
 aws redshift create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc
 
 #Access the public S3 data bucket
+#Use Matillion to load the data (pre-load some data)
 # TODO
 
 
