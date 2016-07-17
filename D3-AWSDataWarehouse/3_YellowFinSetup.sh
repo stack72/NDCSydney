@@ -7,9 +7,6 @@ set -e
 REGION = 'ap-southeast-2'
 MYKEYPAIR = ''
 
-# TIP: Create IAM Group (and Users) with appropriate permissions prior to running this script
-# User permissions needed are as follows: AWS S3, AWS Redshift, AWS EC2, AWS Marketplace
-
 VPCID=`aws ec2 describe-vpc --region $REGION`
 SUBNETID=`aws ec2 describe-subnet --region $REGION`
 ROUTETABLEID=`aws ec2 describe-route-tables | jq .RouteTables[0].RouteTableId -r`

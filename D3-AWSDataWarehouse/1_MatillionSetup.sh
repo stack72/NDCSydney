@@ -14,7 +14,8 @@ SECURITYGROUPID='aws ec2 describe-security-groups --filters Name=vpc-id,Values=$
 
 # Launch Matillion EC2 Instance from the AWS Marketplace for the Australia region
 # TOVERIFY - must use the AMI from your region for Matillion from the marketplace
-INSTANCEID=`aws ec2 run-instances --image-id 	ami-817e56e2 --count 1 --instance-type m3.large --key-name $MYKEYPAIR --security-group-ids $SECURITYGROUPID --subnet-id $SUBNETID`
+INSTANCEID=`aws ec2 run-instances --image-id 	ami-817e56e2 --count 1 --instance-type m3.large \
+    --key-name $MYKEYPAIR --security-group-ids $SECURITYGROUPID --subnet-id $SUBNETID`
 
 # TODO - Pattern to add tags to resources
 DEMOTAGS='aws ec2 create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc'

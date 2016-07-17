@@ -6,50 +6,41 @@ set -e
 #-----Removes all demo resources-------------------------------------
 
 REGION = 'ap-southeast-2'
+ACCOUNT = '653004187743'
+# TODO - scrub account value
+# ACCOUNT = <your AWS account number>
 
 # TODO - Determine and update 'destruction order' of objects
 
-WAREHOUSEUSER = 'aws iam delete-user ....'
-WAREHOUSEROLE = 'aws iam delete-role ... '
-WAREHOUSEPOLICY= 'aws iam delete-policy ....'
+aws iam delete-user --user-name 'WAREHOUSEUSER'
+aws iam delete-role --role-name 'WAREHOUSEROLE'
+aws iam delete-policy --policy-arn 'arn:aws:iam::$ACCOUNT:policy/WAREHOUSEPOLICY'
 
-# Delete a VPC
-vpcId=`aws ec2 delete-vpc --cidr-block 10.0.0.0/16 | jq .Vpc.VpcId -r`
-echo vpc $vpcId deleted
+ROUTETABLEID=`aws ec2 describe-route-tables --region $REGION`
+aws ec2 delete-route --route-table-id $ROUTETABLEID --destination-cidr-block 0.0.0.0/0 --gateway-id $INTERNETGATEWAYID
 
-# Delete a subnet
-subnetid=`aws ec2 delete-subnet --vpc-id $vpcId --cidr-block 10.0.0.0/16| jq .Subnet.SubnetId -r`
-echo subnet $subnetid deleted
+INTERNETGATEWAYID='aws ec2 describe-internet-gateways --region $REGION'
+aws ec2 detach-internet-gateway --internet-gateway-id  $INTERNETGATEWAYID --vpc-id  $VPCID
+aws ec2 delete-internet-gateway --internet-gateway-id  $INTERNETGATEWAYID 
 
-# Detach internet gateway 
-aws ec2 detach-internet-gateway --internet-gateway-id  $gatewayid --vpc-id  $vpcId
+VPCID=`aws ec2 describe-vpcs --region $REGION`
+aws ec2 delete-vpc --vpc-id $VPCID
 
-# Delete an Internet gateway
-gatewayid=`aws ec2 delete-internet-gateway| jq .InternetGateway.InternetGatewayId -r`
-echo gateway $gatewayid deleted
+SUBNETID=`aws ec2 describe-subnets --region $REGION`
+aws ec2 delete-subnet --subnet-id $SUBNETID
 
-# Delete default route to route table.
-routetableId=`aws ec2 describe-route-tables | jq .RouteTables[0].RouteTableId -r`
-echo route table $routetableId found
-aws ec2 delete-route --route-table-id $routetableId --destination-cidr-block 0.0.0.0/0 --gateway-id $gatewayid
-
-# Delete redshift rule into the security group - TO:'unauthorize'
-securityGroupId=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$vpcId | jq .SecurityGroups[0].GroupId -r`
-aws ec2 authorize-security-group-ingress --group-id $securityGroupId  --protocol tcp --port 5439 --cidr 10.0.0.0/16
+# TODO -- Delete redshift rule into the security group - TO:'unauthorize'
+SECURITYGROUPID=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$VPCID | jq .SecurityGroups[0].GroupId -r`
+aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 5439 --cidr 10.0.0.0/16
 
 # Find EC2 tagged instances and delete them (Matillion, YellowFin)
-# TODO - Pattern to add tags to resources
-aws ec2 describe-instances --resources ami-<value> i-<value> --tags Key=show,Value=ndc
+aws ec2 describe-instances --resources ami-<value> i-<value> --tags Key=show,Value=ndc --region $REGION
 aws ec2 terminate-instances ....
 
 # Find Redshift cluster tagged instances and delete them
-# TODO - Pattern to add tags to resources
 redshiftCluster='aws redshift describe-instances --resources ami-<value> i-<value> --tags Key=show,Value=ndc'
 aws redshift delete-cluster ....
-echo redshiftCluster $redshiftCluster deleted
 
-# Delete non-empty public S3 data bucket
-demoBusket='aws s3 rb s3://<bucketName> <tag>.... --force'
-echo s3 $demoBucket deleted
+# TODO - Delete non-empty public S3 data bucket
+aws s3 rb s3://<bucketName> <tag>.... --force
 
-##END SCRIPT
