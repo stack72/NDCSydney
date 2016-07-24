@@ -1,9 +1,0 @@
-This demo shows the following:
-
---SQL Server on Linux using Docker Containers
---Plan to demo on a Mac
---Optionally show iJupiter notebook
-
-Question
---Use DavidMauri's Docker Image? or make my own
---Verify status/updates from MSFT team prior to August 1
