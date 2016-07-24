@@ -9,8 +9,8 @@ MYKEYPAIR = '< my key >' #use a profile, not a key!
 
 VPCID=`aws ec2 describe-vpc --region $REGION`
 SUBNETID=`aws ec2 describe-subnet --region $REGION`
-ROUTETABLEID=`aws ec2 describe-route-tables`
-SECURITYGROUPID='aws ec2 describe-security-groups'
+ROUTETABLEID=`aws ec2 describe-route-tables --region $REGION`
+SECURITYGROUPID='aws ec2 describe-security-groups --region $REGION'
 IPALLOCATIONID=`aws ec2 allocate-address --domain vpc --region $REGION`
 AMIMATILLION = 'ami-817e56e2' #for Australia region
 
