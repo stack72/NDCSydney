@@ -29,7 +29,11 @@
                 "ec2:StopInstances",
                 "ec2:TerminateInstances",
                 "s3:*",
-                "redshift:*"
+                "redshift:*",
+                "sns:*",
+                "sqs:*",
+                "cloudwatch:*",
+                "rds:*"
             ],
             "Effect": "Allow",
             "Resource": [
@@ -37,7 +41,11 @@
                 "arn:aws:ec2:::*",
                 "arn:aws:redshift:::*",
                 "arn:aws:aws-marketplace:::*",
-                "arn:aws:cloudformation:::*"
+                "arn:aws:cloudformation:::*",
+                "arn:aws:sns:::*",
+                "arn:aws:sqs:::*",
+                "arn:aws:cloudwatch:::*",
+                "arn:aws:rds:::*"
             ]
         }
     ]

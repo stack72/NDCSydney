@@ -17,7 +17,8 @@ aws ec2 create-route --route-table-id $ROUTETABLEID --destination-cidr-block 0.0
 SECURITYGROUPID=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$VPCID`
 aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 5439 --cidr 10.0.0.0/16
 
-SUBNETGROUP = aws redshift create-cluster-subnet-group --cluster-subnet-group-name "ndcdemo"  --description "ndcdmo" --subnet-ids $SUBNETID
+SUBNETGROUP = aws redshift create-cluster-subnet-group --cluster-subnet-group-name "ndcdemo" \
+    --description "ndcdmo" --subnet-ids $SUBNETID
 
 #Create the Redshift cluster
 REDSHIFTID =`aws redshift create-cluster --cluster-identifier ndcdemo --node-type dc1.large \
