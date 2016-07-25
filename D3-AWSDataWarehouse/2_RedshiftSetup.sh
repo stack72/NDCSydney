@@ -3,7 +3,7 @@
 
 set -e
 
-#-----Sets up Redshift on AWS EC2)-------------------------------------
+#-----Sets up Redshift on AWS EC2-------------------------------------
 
 REGION = 'ap-southeast-2'
 MYKEYPAIR = ''
@@ -31,8 +31,7 @@ REDSHIFTSECURITYGROUP='aws redshift create-cluster-security-group'...
 # TODO - Pattern to add tags to resources
 aws redshift create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc
 
+#Use Matillion to load test data via the samples -OR-
 #Access the public S3 data bucket
-#Use Matillion to load the data (pre-load some data)
-# TODO
 
 

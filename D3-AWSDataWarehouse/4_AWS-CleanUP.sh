@@ -6,8 +6,7 @@ set -e
 #-----Removes all demo resources-------------------------------------
 
 REGION = 'ap-southeast-2'
-ACCOUNT = '653004187743'
-# ACCOUNT = <your AWS account number>
+ACCOUNT = '<your AWS account number>'
 
 # TODO - Vaidate and update 'destruction order' of objects
 

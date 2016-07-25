@@ -9,7 +9,6 @@ MYKEYPAIR = '< my key >'
 
 VPCID=`aws ec2 describe-vpc --region $REGION`
 SUBNETID=`aws ec2 describe-subnet --region $REGION`
-ROUTETABLEID=`aws ec2 describe-route-tables --region $REGION`
 SECURITYGROUPID='aws ec2 describe-security-groups --region $REGION'
 IPALLOCATIONID=`aws ec2 allocate-address --domain vpc --region $REGION`
 AMIMATILLION = 'ami-817e56e2' #for Australia region, get your value from AWS Marketplace Matillion page
@@ -36,8 +35,7 @@ aws ec2 create-tags --resources $INSTANCEID --tags Key=show,Value=ndc
 #Try out the sample packages, 'dim_airport_setup' and'dim_airpots' -- they populate from public S3 buckets
 
 # (Optional) Load Data into Redshift via Matillion using data in public S3 bucket
-# TODO
-# NOTE: Import an existing Matillion package?
+
 
 #Resources
 #IAM permissions needed -- https://redshiftsupport.matillion.com/customer/en/portal/articles/2054760-managing-credentials?b_id=8915

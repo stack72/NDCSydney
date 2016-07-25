@@ -5,20 +5,18 @@ set -e
 #------Sets up YellowFin from AWS Marketplace on AWS EC2------------
 
 REGION = 'ap-southeast-2'
-MYKEYPAIR = '< my key >' #use a profile, not a key!
-
+MYKEYPAIR = '< my key >' 
 VPCID=`aws ec2 describe-vpc --region $REGION`
 SUBNETID=`aws ec2 describe-subnet --region $REGION`
-ROUTETABLEID=`aws ec2 describe-route-tables --region $REGION`
-GATEWAYID='aws ec2 describe-gateways --region $REGION'
 IPALLOCATIONID=`aws ec2 allocate-address --domain vpc --region $REGION`
-aws ec2 create-route --route-table-id $ROUTETABLEID --destination-cidr-block 0.0.0.0/0 --gateway-id $GATEWAYID
 
-# Add YellowFin rule(s) into the security group and TODO - needs rule for SSH (20), HTTP/S (80/443)
-SECURITYGROUPID=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$VPCID`
-aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 5439 --cidr 10.0.0.0/16
+# Create security group and add inbound rules for rule for SSH (20), HTTP/S (80/443)
+aws ec2 create-security-group --group-name NDC-Yellowfin Name=vpc-id,Values=$VPCID
+aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 22 --cidr <your IP address>
+aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol http --port 80 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol https --port 443 --cidr 0.0.0.0/0
 
-AMIYELLOWFIN = 'ami-209ebd43'  # this is for Australia region
+AMIYELLOWFIN = 'ami-9c1338ff'  # this is for Australia region from AWS Marketplace
 INSTANCEID=`aws ec2 run-instances --image-id $AMIYELLOWFIN --count 1 --instance-type m3.large \
     --key-name $MYKEYPAIR --security-group-ids $SECURITYGROUPID --subnet-id $SUBNETID`
 aws ec2 associate-address --instance-id $INSTANCEID --allocation-id $IPALLOCATIONID
@@ -26,8 +24,11 @@ aws ec2 associate-address --instance-id $INSTANCEID --allocation-id $IPALLOCATIO
 # TODO - Pattern to add tags to resources
 aws ec2 create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc
 
-# Connect to the Redshift Cluster
+#Then open your public IP <http://<EC2-publicIP>, register your details to receive your log-in via email. 
+
+# Connect to the Redshift Cluster - ADD an ingress rule to the security group for Redshift for YellowFin!
 # TODO
+#Login to Yellowfin, go to Admin>Dashboard>Data Sources, fill in Redshift info, click 'create view'
 
 # Use a YellowFin template File to produce a dashboard
 # TODO - get template
