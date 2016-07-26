@@ -28,8 +28,13 @@ aws ec2 create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc
 
 # Connect to the Redshift Cluster - ADD an ingress rule to the security group for Redshift for YellowFin!
 # TODO
+
 #Login to Yellowfin, go to Admin>Dashboard>Data Sources, fill in Redshift info, click 'create view'
+
+## Reference for connecting to Redshift -- http://wiki.yellowfin.com.au/display/USER72/Connecting+to+Redshift
+
 
 # Use a YellowFin template File to produce a dashboard
 # TODO - get template
+## Reference for demo dashboards -- http://wiki.yellowfin.com.au/display/USER72/Getting+Started
 
