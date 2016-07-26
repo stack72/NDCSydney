@@ -9,8 +9,15 @@ REGION = 'ap-southeast-2'
 ACCOUNT = '<your AWS account number>'
 
 # TODO - Vaidate and update 'destruction order' of objects
+# Terminate the instances - dissassociates elassticip automatically
+# Terminiate the redshift instances
+# Delete the redshift security group
+# Remove the security (ingress) rules in the ndc security group
+# Delete the security groups
+# Release the elasticips
+# Delete the VPC (deletes the route table, internet gateway and subnets)
 
-# TODO -- Delete redshift rule into the security group - TO:'unauthorize'
+# TODO -- Delete redshift, matillion and yellowfin rules into the main ndc security group - TO:'unauthorize'
 SECURITYGROUPID=`aws ec2 describe-security-groups --filters Name=vpc-id,Values=$VPCID | jq .SecurityGroups[0].GroupId -r`
 aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 5439 --cidr 10.0.0.0/16
 
