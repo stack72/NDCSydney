@@ -4,22 +4,22 @@ set -e
 
 #------Sets up Matillion ETL on AWS EC2)-------------------------
 
-REGION = 'ap-southeast-2'
-MYKEYPAIR = '< my key >' 
+REGION = '< my AWS region >' # for Australia use 'ap-southeast-2'
+MYKEYPAIR = '< my keypair >' 
 
 VPCID=`aws ec2 describe-vpc --region $REGION`
 SUBNETID=`aws ec2 describe-subnet --region $REGION`
 IPALLOCATIONID=`aws ec2 allocate-address --domain vpc --region $REGION`
 AMIMATILLION = 'ami-817e56e2' #for Australia region, get your value from AWS Marketplace Matillion page
 
-SECURITYGROUPID=`aws ec2 create-security-group --group-name NDC-matillion Name=vpc-id,Values=$VPCID`
-aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 22 --cidr <myIPAddress>
-aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 80 --cidr 0.0.0.0/0
-aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 443 --cidr 0.0.0.0.0/0
-aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 3000 --cidr 10.0.0.0/16
+SECURITYGROUPIDMT=`aws ec2 create-security-group --group-name NDC-matillion Name=vpc-id,Values=$VPCID`
+aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPIDMT  --protocol tcp --port 22 --cidr <myIPAddress>
+aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPIDMT  --protocol tcp --port 80 --cidr 0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPIDMT  --protocol tcp --port 443 --cidr 0.0.0.0.0/0
+aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPIDMT  --protocol tcp --port 3000 --cidr 10.0.0.0/16
 
 INSTANCEID=`aws ec2 run-instances --image-id $AMIMATILLION --count 1 --instance-type m3.large \
-    --key-name $MYKEYPAIR --security-group-ids $SECURITYGROUPID --subnet-id $SUBNETID`
+    --key-name $MYKEYPAIR --security-group-ids $SECURITYGROUPIDMT --subnet-id $SUBNETID`
 aws ec2 associate-address --instance-id $INSTANCEID --allocation-id $IPALLOCATIONID
 aws ec2 create-tags --resources $INSTANCEID --tags Key=show,Value=ndc
 

@@ -5,8 +5,8 @@ set -e
 
 #-----Removes all demo resources-------------------------------------
 
-REGION = 'ap-southeast-2'
-ACCOUNT = '<your AWS account number>'
+REGION = '< my AWS region >' # for Australia use 'ap-southeast-2'
+ACCOUNT = '< my AWS account number >'
 
 # TODO - Vaidate and update 'destruction order' of objects
 # Terminate the instances - dissassociates elassticip automatically

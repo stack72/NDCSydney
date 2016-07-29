@@ -4,9 +4,10 @@ set -e
 
 #-----Sets up IAM, VPC (2 subnets for Redshift) on AWS-------------------------------------
 
-REGION = 'ap-southeast-2'
-PROFILE = 'demo-ndc'
-BUCKETNAME  = '<demo-bucket-name>'
+REGION = '< my AWS region >' # for Australia use 'ap-southeast-2'
+BUCKETNAME  = '< my demo-bucket-name >'
+
+MYKEYPAIR = 'aws ec2 create-key-pair --key-name 'ndc-demo''
 
 WAREHOUSEUSER = 'aws iam create-user --user-name 'WAREHOUSEUSER''
 WAREHOUSEROLE = 'aws iam create-role --role-name 'WAREHOUSEROLE''
