@@ -15,6 +15,8 @@ ACCOUNT = '<your AWS account number>'
 # Remove the security (ingress) rules in the ndc security group
 # Delete the security groups
 # Release the elasticips
+aws ec2 release-address --allocation-id <value1>
+aws ec2 release-address --allocation-id <value2>
 # Delete the VPC (deletes the route table, internet gateway and subnets)
 
 # TODO -- Delete redshift, matillion and yellowfin rules into the main ndc security group - TO:'unauthorize'

@@ -9,15 +9,13 @@ MYKEYPAIR = '< my key >'
 
 VPCID=`aws ec2 describe-vpc --region $REGION`
 SUBNETID=`aws ec2 describe-subnet --region $REGION`
-SECURITYGROUPID='aws ec2 describe-security-groups --region $REGION'
 IPALLOCATIONID=`aws ec2 allocate-address --domain vpc --region $REGION`
 AMIMATILLION = 'ami-817e56e2' #for Australia region, get your value from AWS Marketplace Matillion page
 
-# Add ingress rules a security group 
+SECURITYGROUPID=`aws ec2 create-security-group --group-name NDC-matillion Name=vpc-id,Values=$VPCID`
 aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 22 --cidr <myIPAddress>
 aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 80 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 443 --cidr 0.0.0.0.0/0
-##what is this for? which input addresse?
 aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol tcp --port 3000 --cidr 10.0.0.0/16
 
 INSTANCEID=`aws ec2 run-instances --image-id $AMIMATILLION --count 1 --instance-type m3.large \
@@ -36,9 +34,6 @@ aws ec2 create-tags --resources $INSTANCEID --tags Key=show,Value=ndc
 
 # (Optional) Load Data into Redshift via Matillion using data in public S3 bucket
 
-
 #Resources
 #IAM permissions needed -- https://redshiftsupport.matillion.com/customer/en/portal/articles/2054760-managing-credentials?b_id=8915
 #Security warning - https://redshiftsupport.matillion.com/customer/portal/articles/2236864-publicly-available-warning
-
-**************** Make a CloudFormer stack! *******************************************

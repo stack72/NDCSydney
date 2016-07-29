@@ -20,18 +20,13 @@ aws ec2 authorize-security-group-ingress --group-id $SECURITYGROUPID  --protocol
 SUBNETGROUP = aws redshift create-cluster-subnet-group --cluster-subnet-group-name "ndcdemo" \
     --description "ndcdmo" --subnet-ids $SUBNETID
 
-#Create the Redshift cluster
+REDSHIFTSECURITYGROUP='aws redshift create-cluster-security-group'...
+
 REDSHIFTID =`aws redshift create-cluster --cluster-identifier ndcdemo --node-type dc1.large \
     --master-username admin --master-user-password Password1 \
     --cluster-type single-node --db-name ndc --cluster-subnet-group-name $SUBNETGROUP`
     
-#Create/alter a security group
-REDSHIFTSECURITYGROUP='aws redshift create-cluster-security-group'...
 
-# TODO - Pattern to add tags to resources
-aws redshift create-tags --resources ami-<value> i-<value> --tags Key=show,Value=ndc
 
-#Use Matillion to load test data via the samples -OR-
-#Access the public S3 data bucket
 
 
