@@ -1,2 +1,4 @@
 
 WAREHOUSEUSER-cred.csv
+terraform.tfstate*
+.terraform/
