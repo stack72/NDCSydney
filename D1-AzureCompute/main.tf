@@ -20,9 +20,9 @@ resource "azurerm_subnet" "test" {
 }
 
 resource "azurerm_storage_account" "test" {
-  name                = "ndcsydneysa2"
+  name                = "ndcsydneysa"
   resource_group_name = "${azurerm_resource_group.test.name}"
-  location            = "westus"
+  location            = "${var.location}"
   account_type        = "Standard_LRS"
 }
 
